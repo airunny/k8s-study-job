@@ -1,18 +1,27 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"net"
 	"net/http"
+	"os"
 	"strings"
 )
 
 func do(writer http.ResponseWriter, request *http.Request) {
+	ip, port, _ := net.SplitHostPort(request.RemoteAddr)
+	fmt.Printf("client ip: %v and port :%v\n", ip, port)
+	fmt.Printf("response code:%v", http.StatusOK)
+
 	header := request.Header
 	for key, value := range header {
 		writer.Header().Set(key, strings.Join(value, ""))
 	}
 
+	writer.Header().Set("version", os.Getenv("VERSION"))
 	writer.WriteHeader(http.StatusOK)
+
 	_, err := writer.Write([]byte("200"))
 	if err != nil {
 		log.Println("write response err ", err)
