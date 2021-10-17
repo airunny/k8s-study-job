@@ -40,7 +40,7 @@ func (h *handler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 
 func main() {
 	// 1
-	http.HandleFunc("/healthz", func(writer http.ResponseWriter, request *http.Request) {
+	/**http.HandleFunc("/healthz", func(writer http.ResponseWriter, request *http.Request) {
 		do(writer, request)
 	})
 
@@ -56,7 +56,7 @@ func main() {
 	// 3
 	if err := http.ListenAndServe(":1024", &handler{}); err != nil {
 		log.Fatal(err)
-	}
+	}**/
 
 	// 4
 	server := http.NewServeMux()
