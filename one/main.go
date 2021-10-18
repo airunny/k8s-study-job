@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/facebookarchive/grace/gracehttp"
 )
 
 func do(writer http.ResponseWriter, request *http.Request) {
@@ -61,7 +63,11 @@ func main() {
 	// 4
 	server := http.NewServeMux()
 	server.HandleFunc("/healthz", do)
-	if err := http.ListenAndServe(":1024", server); err != nil {
+	err := gracehttp.Serve(&http.Server{
+		Addr:    ":1024",
+		Handler: server,
+	})
+	if err != nil {
 		log.Fatal(err)
 	}
 }
