@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lease-example
+  namespace: study
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lease
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        app: lease
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: lease
+          image: smileleo/lease-example:latest
+          command:
+            - ./app
+            - -lease-lock-name=example
+            - -lease-lock-namespace=study
+          resources:
+            requests:
+              memory: 1024Mi
+              cpu: 500m
+            limits:
+              memory: 1024Mi
+              cpu: 500m
