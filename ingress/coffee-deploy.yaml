@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coffee
+  namespace: study
+spec:
+  selector:
+    matchLabels:
+      app: coffee
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: coffee
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: coffee
+          image: smileleo/coffee:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            tcpSocket:
+              port: 9090
+          readinessProbe:
+            tcpSocket:
+              port: 9090
+          resources:
+            requests:
+              memory: 100Mi
+              cpu: 500m
+            limits:
+              memory: 200Mi
+              cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coffee-svc
+  namespace: study
+spec:
+  selector:
+    app: coffee
+  ports:
+    - name: coffee
+      port: 9090
+      targetPort: 9090

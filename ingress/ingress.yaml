@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cafe-ingress
+  namespace: study
+spec:
+  rules:
+    - host: cafe.example.com
+      http:
+        paths:
+          - path: /tea
+            pathType: Exact
+            backend:
+              service:
+                name: tea-svc
+                port:
+                  number: 8080
+          - path: /coffee
+            pathType: Exact
+            backend:
+              service:
+                name: coffee-svc
+                port:
+                  number: 9090
